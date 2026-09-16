@@ -1,0 +1,29 @@
+{% load static %}
+<!doctype html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block titulo %}Biblioteca{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'acervo/estilo.css' %}">
+</head>
+<body>
+    <header class="topo">
+        <a class="marca" href="{% url 'acervo:lista' %}">Biblioteca</a>
+        <nav class="menu" aria-label="Menu principal">
+            <a href="{% url 'acervo:lista' %}">Acervo</a>
+            <a href="{% url 'acervo:novo' %}">Novo livro</a>
+            <a href="{% url 'admin:index' %}">Admin</a>
+        </nav>
+    </header>
+
+    <main class="conteudo">
+        {% block conteudo %}{% endblock %}
+    </main>
+
+    <footer class="rodape">
+        <span>Laboratorio de Programacao Full Stack</span>
+    </footer>
+</body>
+</html>
+

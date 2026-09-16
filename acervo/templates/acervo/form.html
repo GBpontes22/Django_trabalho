@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Novo livro | Biblioteca{% endblock %}
+
+{% block conteudo %}
+<section class="cabecalho-pagina">
+    <div>
+        <p class="rotulo">Cadastro</p>
+        <h1>Novo livro</h1>
+    </div>
+    <a class="botao secundario" href="{% url 'acervo:lista' %}">Voltar</a>
+</section>
+
+<form class="formulario" method="post">
+    {% csrf_token %}
+
+    {% for field in form %}
+        <label class="campo" for="{{ field.id_for_label }}">
+            <span>{{ field.label }}</span>
+            {{ field }}
+            {% if field.errors %}
+                <small class="erro">{{ field.errors|striptags }}</small>
+            {% endif %}
+        </label>
+    {% endfor %}
+
+    <div class="acoes">
+        <button class="botao primario" type="submit">Salvar</button>
+        <a class="botao secundario" href="{% url 'acervo:lista' %}">Cancelar</a>
+    </div>
+</form>
+{% endblock %}
+

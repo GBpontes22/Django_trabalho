@@ -1,3 +1,7 @@
-from django.shortcuts import render
+from django.http import HttpResponse
+
+
+def inicio(request):
+    return HttpResponse('Ola, acervo!')
 
 # Create your views here.

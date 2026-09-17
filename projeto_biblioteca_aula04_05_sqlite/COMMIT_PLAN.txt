@@ -1,0 +1,17 @@
+PLANO DE COMMITS — mínimo de 10
+
+01 - Estrutura inicial do projeto Django
+02 - Configuração inicial do projeto
+03 - Criação do aplicativo acervo
+04 - Criação do model Livro
+05 - Criação e aplicação das migrations
+06 - Configuração do Django Admin
+07 - Criação do LivroForm
+08 - Criação da view de listagem
+09 - Criação das URLs
+10 - Criação dos templates
+11 - Implementação da busca por nome
+12 - Implementação dos filtros por tipo e categoria
+13 - Ajustes de layout e CSS
+14 - Revisão e documentação do projeto
+15 - Teste final da aplicação

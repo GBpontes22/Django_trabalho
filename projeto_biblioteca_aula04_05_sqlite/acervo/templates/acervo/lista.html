@@ -1,0 +1,90 @@
+{% extends "acervo/base.html" %}
+
+{% block title %}Acervo{% endblock %}
+
+{% block conteudo %}
+<section class="topo">
+    <div>
+        <h2>Acervo de livros</h2>
+        <p>Pesquise por nome, tipo de acervo ou categoria.</p>
+    </div>
+    <a class="botao" href="{% url 'novo_livro' %}">+ Novo livro</a>
+</section>
+
+<form method="get" class="filtros">
+    <div>
+        <label for="nome">Nome do livro</label>
+        <input id="nome" type="text" name="nome" value="{{ nome }}" placeholder="Pesquisar por nome">
+    </div>
+
+    <div>
+        <label for="tipo">Tipo de acervo</label>
+        <select id="tipo" name="tipo">
+            <option value="">Todos</option>
+            {% for valor, texto in tipos_acervo %}
+                <option value="{{ valor }}" {% if tipo == valor %}selected{% endif %}>
+                    {{ texto }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div>
+        <label for="categoria">Categoria</label>
+        <select id="categoria" name="categoria">
+            <option value="">Todas</option>
+            {% for valor, texto in categorias %}
+                <option value="{{ valor }}" {% if categoria == valor %}selected{% endif %}>
+                    {{ texto }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="acoes-filtro">
+        <button class="botao" type="submit">Pesquisar</button>
+        <a class="botao secundario" href="{% url 'lista' %}">Limpar</a>
+    </div>
+</form>
+
+<div class="resultado">
+    <strong>{{ livros|length }}</strong> livro(s) encontrado(s).
+</div>
+
+<div class="tabela-container">
+    <table>
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Autor</th>
+                <th>Ano</th>
+                <th>Tipo</th>
+                <th>Categoria</th>
+                <th>Disponível</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for livro in livros %}
+            <tr>
+                <td>{{ livro.titulo }}</td>
+                <td>{{ livro.autor }}</td>
+                <td>{{ livro.ano }}</td>
+                <td>{{ livro.get_tipo_acervo_display }}</td>
+                <td>{{ livro.get_categoria_display }}</td>
+                <td>
+                    {% if livro.disponivel %}
+                        <span class="sim">Sim</span>
+                    {% else %}
+                        <span class="nao">Não</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="vazio">Nenhum livro encontrado.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

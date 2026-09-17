@@ -1,0 +1,41 @@
+{% extends "acervo/base.html" %}
+
+{% block title %}Cadastrar livro{% endblock %}
+
+{% block conteudo %}
+<section class="formulario">
+    <h2>Cadastrar livro</h2>
+    <p>Preencha os dados do novo livro.</p>
+
+    <form method="post">
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+            <div class="erro">{{ form.non_field_errors }}</div>
+        {% endif %}
+
+        {% for field in form %}
+            <div class="campo-form">
+                {% if field.name == "disponivel" %}
+                    <label class="check-label">
+                        {{ field }}
+                        {{ field.label }}
+                    </label>
+                {% else %}
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                {% endif %}
+
+                {% for error in field.errors %}
+                    <small class="erro">{{ error }}</small>
+                {% endfor %}
+            </div>
+        {% endfor %}
+
+        <div class="acoes">
+            <button class="botao" type="submit">Salvar</button>
+            <a class="botao secundario" href="{% url 'lista' %}">Cancelar</a>
+        </div>
+    </form>
+</section>
+{% endblock %}

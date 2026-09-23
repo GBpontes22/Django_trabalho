@@ -1,6 +1,13 @@
 from django import forms
 
-from .models import Livro
+from .models import Autor, Exemplar, Livro, Membro
+
+
+class AutorForm(forms.ModelForm):
+    class Meta:
+        model = Autor
+        fields = ['nome', 'nacionalidade', 'data_nascimento']
+        widgets = {'data_nascimento': forms.DateInput(attrs={'type': 'date'})}
 
 
 class LivroForm(forms.ModelForm):
@@ -10,13 +17,46 @@ class LivroForm(forms.ModelForm):
             'titulo',
             'autor',
             'ano',
+            'isbn',
             'tipo_acervo',
             'categoria',
             'disponivel',
         ]
         widgets = {
             'titulo': forms.TextInput(attrs={'placeholder': 'Ex.: Dom Casmurro'}),
-            'autor': forms.TextInput(attrs={'placeholder': 'Ex.: Machado de Assis'}),
             'ano': forms.NumberInput(attrs={'min': 0}),
         }
 
+
+class ExemplarForm(forms.ModelForm):
+    class Meta:
+        model = Exemplar
+        fields = ['livro', 'codigo', 'localizacao', 'status']
+
+
+class MembroForm(forms.ModelForm):
+    class Meta:
+        model = Membro
+        fields = ['nome', 'email', 'telefone', 'ativo']
+
+
+class EmprestimoForm(forms.Form):
+    membro = forms.ModelChoiceField(
+        queryset=Membro.objects.filter(ativo=True), label='Membro'
+    )
+    exemplar = forms.ModelChoiceField(
+        queryset=Exemplar.objects.filter(status=Exemplar.STATUS_DISPONIVEL),
+        label='Exemplar',
+    )
+    vencimento = forms.DateField(
+        label='Data de vencimento', widget=forms.DateInput(attrs={'type': 'date'})
+    )
+
+
+class ReservaForm(forms.Form):
+    membro = forms.ModelChoiceField(
+        queryset=Membro.objects.filter(ativo=True), label='Membro'
+    )
+    livro = forms.ModelChoiceField(
+        queryset=Livro.objects.filter(disponivel=True), label='Livro'
+    )

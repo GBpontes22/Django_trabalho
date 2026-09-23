@@ -9,7 +9,8 @@
 </section>
 
 <form class="filtros" method="get">
-    <label><span>Nome ou autor</span><input type="search" name="q" value="{{ busca }}" placeholder="Pesquisar"></label>
+    <label><span>Titulo ou autor</span><input type="search" name="q" value="{{ request.GET.q }}" placeholder="Pesquisar"></label>
+    <label><span>Situacao</span><select name="status"><option value="">Todas</option>{% for valor, texto in status_acervo %}<option value="{{ valor }}" {% if status_selecionado == valor %}selected{% endif %}>{{ texto }}</option>{% endfor %}</select></label>
     <label><span>Tipo</span><select name="tipo"><option value="">Todos</option>{% for valor, texto in tipos_acervo %}<option value="{{ valor }}" {% if tipo_selecionado == valor %}selected{% endif %}>{{ texto }}</option>{% endfor %}</select></label>
     <label><span>Categoria</span><select name="categoria"><option value="">Todas</option>{% for valor, texto in categorias %}<option value="{{ valor }}" {% if categoria_selecionada == valor %}selected{% endif %}>{{ texto }}</option>{% endfor %}</select></label>
     <button class="botao" type="submit">Pesquisar</button>

@@ -86,6 +86,7 @@ def dashboard(request):
 
 def lista_livros(request):
     busca = request.GET.get('q', '').strip()
+    status = request.GET.get('status', '').strip()
     tipo = request.GET.get('tipo', '').strip()
     categoria = request.GET.get('categoria', '').strip()
     livros = Livro.objects.select_related('autor').annotate(
@@ -94,9 +95,19 @@ def lista_livros(request):
             'exemplares',
             filter=Q(exemplares__status=Exemplar.STATUS_DISPONIVEL),
         ),
+        exemplares_emprestados=Count(
+            'exemplares',
+            filter=Q(exemplares__status=Exemplar.STATUS_EMPRESTADO),
+        ),
     )
     if busca:
-        livros = livros.filter(Q(titulo__icontains=busca) | Q(autor__nome__icontains=busca))
+        livros = livros.filter(
+            Q(titulo__icontains=busca) | Q(autor__nome__icontains=busca)
+        )
+    if status == Exemplar.STATUS_DISPONIVEL:
+        livros = livros.filter(exemplares_disponiveis__gt=0)
+    elif status == Exemplar.STATUS_EMPRESTADO:
+        livros = livros.filter(exemplares_emprestados__gt=0)
     if tipo:
         livros = livros.filter(tipo_acervo=tipo)
     if categoria:
@@ -107,6 +118,11 @@ def lista_livros(request):
         {
             'livros': livros,
             'busca': busca,
+            'status_selecionado': status,
+            'status_acervo': [
+                (Exemplar.STATUS_DISPONIVEL, 'Disponivel'),
+                (Exemplar.STATUS_EMPRESTADO, 'Emprestado'),
+            ],
             'tipo_selecionado': tipo,
             'categoria_selecionada': categoria,
             'tipos_acervo': Livro.TIPO_ACERVO_CHOICES,

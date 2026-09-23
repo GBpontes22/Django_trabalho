@@ -72,6 +72,39 @@ class LivroViewsTests(AcervoBaseTestCase):
         self.assertContains(response, 'Dom Casmurro')
         self.assertNotContains(response, 'Clean Code')
 
+    def test_filtro_por_disponivel(self):
+        self.exemplar.status = Exemplar.STATUS_EMPRESTADO
+        self.exemplar.save(update_fields=['status'])
+        response = self.client.get(
+            reverse('acervo:lista'), {'status': Exemplar.STATUS_DISPONIVEL}
+        )
+        self.assertContains(response, 'Clean Code')
+        self.assertNotContains(response, 'Dom Casmurro')
+
+    def test_filtro_por_emprestado(self):
+        self.exemplar.status = Exemplar.STATUS_EMPRESTADO
+        self.exemplar.save(update_fields=['status'])
+        response = self.client.get(
+            reverse('acervo:lista'), {'status': Exemplar.STATUS_EMPRESTADO}
+        )
+        self.assertContains(response, 'Dom Casmurro')
+        self.assertNotContains(response, 'Clean Code')
+
+    def test_busca_e_status_funcionam_juntos(self):
+        self.exemplar.status = Exemplar.STATUS_EMPRESTADO
+        self.exemplar.save(update_fields=['status'])
+        response = self.client.get(
+            reverse('acervo:lista'),
+            {'q': 'Machado', 'status': Exemplar.STATUS_EMPRESTADO},
+        )
+        self.assertContains(response, 'Dom Casmurro')
+        self.assertNotContains(response, 'Clean Code')
+
+    def test_busca_preserva_termo_e_exibe_mensagem_sem_resultado(self):
+        response = self.client.get(reverse('acervo:lista'), {'q': 'Inexistente'})
+        self.assertContains(response, 'value="Inexistente"', html=False)
+        self.assertContains(response, 'Nenhum livro encontrado.')
+
     def test_cadastro_cria_livro_relacionado_ao_autor(self):
         response = self.client.post(
             reverse('acervo:novo'),

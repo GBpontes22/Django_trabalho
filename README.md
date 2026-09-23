@@ -1,7 +1,3 @@
-# Biblioteca Django - P1
-
-Projeto da disciplina Laboratorio de Programacao Full Stack. A aplicacao consolida as aulas 04 e 05 e implementa o MVP de Biblioteca/Acervo proposto para o P1.
-
 ## Funcionalidades
 
 - CRUD de autores, livros, exemplares e membros.

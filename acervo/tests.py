@@ -121,6 +121,25 @@ class LivroViewsTests(AcervoBaseTestCase):
         livro = Livro.objects.get(titulo='O Principe')
         self.assertEqual(livro.autor, self.machado)
 
+    def test_cadastro_rejeita_ano_de_publicacao_futuro(self):
+        ano_futuro = timezone.localdate().year + 1
+        response = self.client.post(
+            reverse('acervo:novo'),
+            {
+                'titulo': 'Livro do Futuro',
+                'autor': self.machado.pk,
+                'ano': ano_futuro,
+                'tipo_acervo': Livro.TIPO_FISICO,
+                'categoria': '800',
+                'disponivel': 'on',
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(
+            response, 'O ano de publicacao nao pode ser um ano futuro.'
+        )
+        self.assertFalse(Livro.objects.filter(titulo='Livro do Futuro').exists())
+
     def test_edicao_e_exclusao_de_livro(self):
         response = self.client.post(
             reverse('acervo:editar_livro', args=[self.clean_code.pk]),

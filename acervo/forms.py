@@ -1,4 +1,5 @@
 from django import forms
+from django.utils import timezone
 
 from .models import Autor, Exemplar, Livro, Membro
 
@@ -26,6 +27,14 @@ class LivroForm(forms.ModelForm):
             'titulo': forms.TextInput(attrs={'placeholder': 'Ex.: Dom Casmurro'}),
             'ano': forms.NumberInput(attrs={'min': 0}),
         }
+
+    def clean_ano(self):
+        ano = self.cleaned_data.get('ano')
+        if ano and ano > timezone.localdate().year:
+            raise forms.ValidationError(
+                'O ano de publicacao nao pode ser um ano futuro.'
+            )
+        return ano
 
 
 class ExemplarForm(forms.ModelForm):

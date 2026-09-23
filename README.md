@@ -68,3 +68,5 @@ python manage.py test
 ## Referencias da disciplina
 
 Os PDFs das aulas foram usados como referencia didatica. As instrucoes de ambiente e implementacao foram adaptadas para manter o projeto reproduzivel e testavel sem versionar credenciais, banco local ou ambiente virtual.
+
+A justificativa das duas features obrigatorias esta em `RELATORIO_P1.md`.

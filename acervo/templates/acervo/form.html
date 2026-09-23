@@ -1,33 +1,32 @@
 {% extends 'base.html' %}
 
-{% block titulo %}Novo livro | Biblioteca{% endblock %}
+{% block titulo %}{{ titulo_form }} | Biblioteca{% endblock %}
 
 {% block conteudo %}
 <section class="cabecalho-pagina">
     <div>
         <p class="rotulo">Cadastro</p>
-        <h1>Novo livro</h1>
+        <h1>{{ titulo_form }}</h1>
     </div>
-    <a class="botao secundario" href="{% url 'acervo:lista' %}">Voltar</a>
+    <a class="botao secundario" href="{{ voltar_url }}">Voltar</a>
 </section>
 
 <form class="formulario" method="post">
     {% csrf_token %}
-
+    {% if form.non_field_errors %}
+        <div class="erro">{{ form.non_field_errors|striptags }}</div>
+    {% endif %}
     {% for field in form %}
         <label class="campo" for="{{ field.id_for_label }}">
             <span>{{ field.label }}</span>
             {{ field }}
-            {% if field.errors %}
-                <small class="erro">{{ field.errors|striptags }}</small>
-            {% endif %}
+            {% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}
+            {% if field.errors %}<small class="erro">{{ field.errors|striptags }}</small>{% endif %}
         </label>
     {% endfor %}
-
     <div class="acoes">
         <button class="botao primario" type="submit">Salvar</button>
-        <a class="botao secundario" href="{% url 'acervo:lista' %}">Cancelar</a>
+        <a class="botao secundario" href="{{ voltar_url }}">Cancelar</a>
     </div>
 </form>
 {% endblock %}
-

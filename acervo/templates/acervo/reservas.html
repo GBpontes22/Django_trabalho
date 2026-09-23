@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block titulo %}Reservas | Biblioteca{% endblock %}
+{% block conteudo %}
+<section class="cabecalho-pagina"><div><p class="rotulo">Fila de espera</p><h1>Reservas</h1></div><a class="botao primario" href="{% url 'acervo:nova_reserva' %}">Nova reserva</a></section>
+<form class="filtros simples" method="get"><label><span>Status</span><select name="status"><option value="">Todos</option>{% for valor, texto in status_choices %}<option value="{{ valor }}" {% if status == valor %}selected{% endif %}>{{ texto }}</option>{% endfor %}</select></label><button class="botao" type="submit">Filtrar</button></form>
+<section class="tabela-wrap"><table><thead><tr><th>Posicao</th><th>Livro</th><th>Membro</th><th>Solicitada</th><th>Status</th><th>Acao</th></tr></thead><tbody>{% for reserva in reservas %}<tr><td>{% if reserva.posicao %}{{ reserva.posicao }}{% else %}-{% endif %}</td><td>{{ reserva.livro }}</td><td>{{ reserva.membro }}</td><td>{{ reserva.solicitada_em|date:'d/m/Y H:i' }}</td><td>{{ reserva.get_status_display }}</td><td>{% if reserva.status == 'aguardando' %}<form method="post" action="{% url 'acervo:cancelar_reserva' reserva.pk %}">{% csrf_token %}<button class="link-perigo" type="submit">Cancelar</button></form>{% else %}-{% endif %}</td></tr>{% empty %}<tr><td colspan="6" class="vazio">Nenhuma reserva encontrada.</td></tr>{% endfor %}</tbody></table></section>
+{% endblock %}

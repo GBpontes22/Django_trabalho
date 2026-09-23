@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block titulo %}Autores | Biblioteca{% endblock %}
+{% block conteudo %}
+<section class="cabecalho-pagina"><div><p class="rotulo">Catalogacao</p><h1>Autores</h1></div><a class="botao primario" href="{% url 'acervo:novo_autor' %}">Novo autor</a></section>
+<form class="filtros simples" method="get"><label><span>Nome</span><input type="search" name="q" value="{{ busca }}"></label><button class="botao" type="submit">Pesquisar</button></form>
+<section class="tabela-wrap"><table><thead><tr><th>Nome</th><th>Nacionalidade</th><th>Livros</th><th>Acoes</th></tr></thead><tbody>{% for autor in autores %}<tr><td>{{ autor.nome }}</td><td>{{ autor.nacionalidade|default:'-' }}</td><td>{{ autor.total_livros }}</td><td class="acoes-tabela"><a href="{% url 'acervo:editar_autor' autor.pk %}">Editar</a><a class="perigo" href="{% url 'acervo:excluir_autor' autor.pk %}">Excluir</a></td></tr>{% empty %}<tr><td colspan="4" class="vazio">Nenhum autor encontrado.</td></tr>{% endfor %}</tbody></table></section>
+{% endblock %}

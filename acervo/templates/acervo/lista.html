@@ -1,81 +1,28 @@
 {% extends 'base.html' %}
 
-{% block titulo %}Acervo | Biblioteca{% endblock %}
+{% block titulo %}Livros | Biblioteca{% endblock %}
 
 {% block conteudo %}
 <section class="cabecalho-pagina">
-    <div>
-        <p class="rotulo">Acervo</p>
-        <h1>Livros cadastrados</h1>
-    </div>
+    <div><p class="rotulo">Acervo</p><h1>Livros</h1></div>
     <a class="botao primario" href="{% url 'acervo:novo' %}">Novo livro</a>
 </section>
 
-<form class="filtros" method="get" action="{% url 'acervo:lista' %}">
-    <label>
-        <span>Nome</span>
-        <input type="search" name="q" value="{{ busca }}" placeholder="Titulo do livro">
-    </label>
-
-    <label>
-        <span>Tipo</span>
-        <select name="tipo">
-            <option value="">Todos</option>
-            {% for valor, texto in tipos_acervo %}
-                <option value="{{ valor }}" {% if tipo_selecionado == valor %}selected{% endif %}>{{ texto }}</option>
-            {% endfor %}
-        </select>
-    </label>
-
-    <label>
-        <span>Categoria</span>
-        <select name="categoria">
-            <option value="">Todas</option>
-            {% for valor, texto in categorias %}
-                <option value="{{ valor }}" {% if categoria_selecionada == valor %}selected{% endif %}>{{ texto }}</option>
-            {% endfor %}
-        </select>
-    </label>
-
+<form class="filtros" method="get">
+    <label><span>Nome ou autor</span><input type="search" name="q" value="{{ busca }}" placeholder="Pesquisar"></label>
+    <label><span>Tipo</span><select name="tipo"><option value="">Todos</option>{% for valor, texto in tipos_acervo %}<option value="{{ valor }}" {% if tipo_selecionado == valor %}selected{% endif %}>{{ texto }}</option>{% endfor %}</select></label>
+    <label><span>Categoria</span><select name="categoria"><option value="">Todas</option>{% for valor, texto in categorias %}<option value="{{ valor }}" {% if categoria_selecionada == valor %}selected{% endif %}>{{ texto }}</option>{% endfor %}</select></label>
     <button class="botao" type="submit">Pesquisar</button>
     <a class="botao secundario" href="{% url 'acervo:lista' %}">Limpar</a>
 </form>
 
 <section class="tabela-wrap" aria-label="Lista de livros">
-    <table>
-        <thead>
-            <tr>
-                <th>Nome</th>
-                <th>Autor</th>
-                <th>Ano</th>
-                <th>Tipo</th>
-                <th>Categoria</th>
-                <th>Disponibilidade</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for livro in livros %}
-                <tr>
-                    <td>{{ livro.titulo }}</td>
-                    <td>{{ livro.autor }}</td>
-                    <td>{{ livro.ano }}</td>
-                    <td>{{ livro.get_tipo_acervo_display }}</td>
-                    <td>{{ livro.get_categoria_display }}</td>
-                    <td>
-                        {% if livro.disponivel %}
-                            Disponivel
-                        {% else %}
-                            Indisponivel
-                        {% endif %}
-                    </td>
-                </tr>
-            {% empty %}
-                <tr>
-                    <td colspan="6" class="vazio">Nenhum livro encontrado.</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<table><thead><tr><th>Livro</th><th>Tipo</th><th>Categoria</th><th>Exemplares</th><th>Disponiveis</th><th>Acoes</th></tr></thead>
+<tbody>{% for livro in livros %}<tr>
+    <td><strong>{{ livro.titulo }}</strong><small>{{ livro.autor }} - {{ livro.ano }}</small></td>
+    <td>{{ livro.get_tipo_acervo_display }}</td><td>{{ livro.get_categoria_display }}</td>
+    <td>{{ livro.total_exemplares }}</td><td>{{ livro.exemplares_disponiveis }}</td>
+    <td class="acoes-tabela"><a href="{% url 'acervo:editar_livro' livro.pk %}">Editar</a><a class="perigo" href="{% url 'acervo:excluir_livro' livro.pk %}">Excluir</a></td>
+</tr>{% empty %}<tr><td colspan="6" class="vazio">Nenhum livro encontrado.</td></tr>{% endfor %}</tbody></table>
 </section>
 {% endblock %}
-

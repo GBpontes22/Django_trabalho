@@ -33,6 +33,21 @@ class ExemplarForm(forms.ModelForm):
         model = Exemplar
         fields = ['livro', 'codigo', 'localizacao', 'status']
 
+    def clean_status(self):
+        status = self.cleaned_data['status']
+        possui_emprestimo = self.instance.pk and self.instance.emprestimos.filter(
+            devolvido_em__isnull=True
+        ).exists()
+        if possui_emprestimo and status != Exemplar.STATUS_EMPRESTADO:
+            raise forms.ValidationError(
+                'Registre a devolucao antes de alterar o status deste exemplar.'
+            )
+        if not possui_emprestimo and status == Exemplar.STATUS_EMPRESTADO:
+            raise forms.ValidationError(
+                'O status emprestado e definido ao registrar um emprestimo.'
+            )
+        return status
+
 
 class MembroForm(forms.ModelForm):
     class Meta:

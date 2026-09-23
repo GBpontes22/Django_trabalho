@@ -1,0 +1,3 @@
+{% extends 'base.html' %}
+{% block titulo %}Excluir {{ titulo_form }} | Biblioteca{% endblock %}
+{% block conteudo %}<section class="confirmacao"><p class="rotulo">Confirmacao</p><h1>Excluir {{ titulo_form|lower }}</h1><p>Confirma a exclusao de <strong>{{ objeto }}</strong>? Esta acao nao pode ser desfeita.</p><form method="post">{% csrf_token %}<div class="acoes"><button class="botao perigo" type="submit">Excluir</button><a class="botao secundario" href="{{ voltar_url }}">Cancelar</a></div></form></section>{% endblock %}

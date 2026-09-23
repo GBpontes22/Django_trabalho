@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block titulo %}Painel | Biblioteca{% endblock %}
+{% block conteudo %}
+<section class="cabecalho-pagina"><div><p class="rotulo">Visao geral</p><h1>Painel da biblioteca</h1></div><a class="botao primario" href="{% url 'acervo:novo_emprestimo' %}">Novo emprestimo</a></section>
+<section class="metricas">
+    <a href="{% url 'acervo:lista' %}"><span>Livros</span><strong>{{ total_livros }}</strong></a>
+    <a href="{% url 'acervo:exemplares' %}"><span>Exemplares</span><strong>{{ total_exemplares }}</strong><small>{{ exemplares_disponiveis }} disponiveis</small></a>
+    <a href="{% url 'acervo:emprestimos' %}"><span>Emprestimos ativos</span><strong>{{ emprestimos_ativos }}</strong></a>
+    <a href="{% url 'acervo:emprestimos' %}?status=atrasados"><span>Atrasados</span><strong>{{ emprestimos_atrasados }}</strong></a>
+    <a href="{% url 'acervo:reservas' %}"><span>Reservas na fila</span><strong>{{ reservas_ativas }}</strong></a>
+</section>
+<section class="atalhos"><h2>Operacoes</h2><div class="acoes"><a class="botao" href="{% url 'acervo:novo_emprestimo' %}">Registrar emprestimo</a><a class="botao" href="{% url 'acervo:nova_reserva' %}">Adicionar reserva</a><a class="botao" href="{% url 'acervo:novo_membro' %}">Cadastrar membro</a><a class="botao" href="{% url 'acervo:novo_exemplar' %}">Cadastrar exemplar</a></div></section>
+{% endblock %}

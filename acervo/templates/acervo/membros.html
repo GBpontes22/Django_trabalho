@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block titulo %}Membros | Biblioteca{% endblock %}
+{% block conteudo %}
+<section class="cabecalho-pagina"><div><p class="rotulo">Atendimento</p><h1>Membros</h1></div><a class="botao primario" href="{% url 'acervo:novo_membro' %}">Novo membro</a></section>
+<form class="filtros simples" method="get"><label><span>Nome ou e-mail</span><input type="search" name="q" value="{{ busca }}"></label><button class="botao" type="submit">Pesquisar</button></form>
+<section class="tabela-wrap"><table><thead><tr><th>Nome</th><th>Contato</th><th>Status</th><th>Emprestimos ativos</th><th>Acoes</th></tr></thead><tbody>{% for membro in membros %}<tr><td>{{ membro.nome }}</td><td>{{ membro.email }}<small>{{ membro.telefone }}</small></td><td>{% if membro.ativo %}Ativo{% else %}Inativo{% endif %}</td><td>{{ membro.emprestimos_ativos }}</td><td class="acoes-tabela"><a href="{% url 'acervo:editar_membro' membro.pk %}">Editar</a><a class="perigo" href="{% url 'acervo:excluir_membro' membro.pk %}">Excluir</a></td></tr>{% empty %}<tr><td colspan="5" class="vazio">Nenhum membro encontrado.</td></tr>{% endfor %}</tbody></table></section>
+{% endblock %}

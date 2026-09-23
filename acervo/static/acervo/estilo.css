@@ -47,13 +47,14 @@ a {
 .menu {
     display: flex;
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 8px 14px;
 }
 
 .menu a {
     color: var(--muted);
     font-weight: 700;
     text-decoration: none;
+    white-space: nowrap;
 }
 
 .menu a:hover {
@@ -85,6 +86,11 @@ h1 {
     margin: 0;
     font-size: clamp(28px, 4vw, 42px);
     line-height: 1.1;
+}
+
+h2 {
+    margin: 0 0 14px;
+    font-size: 20px;
 }
 
 .botao {
@@ -121,6 +127,18 @@ h1 {
     color: var(--muted);
 }
 
+.botao.perigo {
+    border-color: var(--erro);
+    background: var(--erro);
+    color: #ffffff;
+}
+
+.botao.pequeno {
+    min-height: 34px;
+    padding: 0 10px;
+    font-size: 13px;
+}
+
 .filtros,
 .formulario {
     display: grid;
@@ -137,6 +155,15 @@ h1 {
     margin-bottom: 18px;
 }
 
+.filtros.simples {
+    grid-template-columns: minmax(240px, 520px) auto;
+    justify-content: start;
+}
+
+.filtros.compactos {
+    grid-template-columns: minmax(240px, 1fr) minmax(180px, 240px) auto auto;
+}
+
 label,
 .campo {
     display: grid;
@@ -151,7 +178,8 @@ label span,
 }
 
 input,
-select {
+select,
+textarea {
     width: 100%;
     min-height: 42px;
     padding: 9px 11px;
@@ -166,6 +194,126 @@ input:focus,
 select:focus {
     outline: 3px solid rgba(15, 118, 110, 0.18);
     border-color: var(--primario);
+}
+
+.mensagens {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 18px;
+}
+
+.mensagem {
+    margin: 0;
+    padding: 12px 14px;
+    border: 1px solid #86b7b1;
+    border-radius: 6px;
+    background: #e8f5f3;
+}
+
+.mensagem.error {
+    border-color: #e5a4a4;
+    background: #fff1f1;
+    color: var(--erro);
+}
+
+.metricas {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(150px, 1fr));
+    gap: 12px;
+    margin-bottom: 28px;
+}
+
+.metricas a {
+    display: grid;
+    min-height: 130px;
+    padding: 18px;
+    border: 1px solid var(--linha);
+    border-radius: 8px;
+    background: var(--painel);
+    text-decoration: none;
+}
+
+.metricas span,
+.metricas small,
+td small {
+    display: block;
+    color: var(--muted);
+}
+
+.metricas strong {
+    align-self: end;
+    color: var(--primario-escuro);
+    font-size: 36px;
+}
+
+.atalhos,
+.confirmacao {
+    padding: 20px;
+    border: 1px solid var(--linha);
+    border-radius: 8px;
+    background: var(--painel);
+}
+
+.confirmacao {
+    max-width: 680px;
+}
+
+.acoes-tabela {
+    white-space: nowrap;
+}
+
+.acoes-tabela a,
+.link-perigo {
+    margin-right: 12px;
+    color: var(--primario-escuro);
+    font: inherit;
+    font-weight: 700;
+}
+
+.acoes-tabela .perigo,
+.link-perigo {
+    border: 0;
+    background: transparent;
+    color: var(--erro);
+    cursor: pointer;
+}
+
+.status {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 5px;
+    background: #e5e7eb;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.status.disponivel {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.status.emprestado {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.abas {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--linha);
+}
+
+.abas a {
+    padding: 10px 14px;
+    color: var(--muted);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.abas a.ativo {
+    border-bottom: 3px solid var(--primario);
+    color: var(--primario-escuro);
 }
 
 .tabela-wrap {
@@ -238,7 +386,10 @@ tbody tr:last-child td {
         flex-direction: column;
     }
 
-    .filtros {
+    .filtros,
+    .filtros.simples,
+    .filtros.compactos,
+    .metricas {
         grid-template-columns: 1fr;
     }
 
@@ -246,4 +397,3 @@ tbody tr:last-child td {
         width: 100%;
     }
 }
-

@@ -9,21 +9,32 @@
 </head>
 <body>
     <header class="topo">
-        <a class="marca" href="{% url 'acervo:lista' %}">Biblioteca</a>
+        <a class="marca" href="{% url 'acervo:dashboard' %}">Biblioteca</a>
         <nav class="menu" aria-label="Menu principal">
-            <a href="{% url 'acervo:lista' %}">Acervo</a>
-            <a href="{% url 'acervo:novo' %}">Novo livro</a>
+            <a href="{% url 'acervo:dashboard' %}">Painel</a>
+            <a href="{% url 'acervo:lista' %}">Livros</a>
+            <a href="{% url 'acervo:autores' %}">Autores</a>
+            <a href="{% url 'acervo:exemplares' %}">Exemplares</a>
+            <a href="{% url 'acervo:membros' %}">Membros</a>
+            <a href="{% url 'acervo:emprestimos' %}">Emprestimos</a>
+            <a href="{% url 'acervo:reservas' %}">Reservas</a>
             <a href="{% url 'admin:index' %}">Admin</a>
         </nav>
     </header>
 
     <main class="conteudo">
+        {% if messages %}
+            <section class="mensagens" aria-label="Mensagens do sistema">
+                {% for message in messages %}
+                    <p class="mensagem {{ message.tags }}">{{ message }}</p>
+                {% endfor %}
+            </section>
+        {% endif %}
         {% block conteudo %}{% endblock %}
     </main>
 
     <footer class="rodape">
-        <span>Laboratorio de Programacao Full Stack</span>
+        <span>Laboratorio de Programacao Full Stack - P1 Biblioteca</span>
     </footer>
 </body>
 </html>
-
